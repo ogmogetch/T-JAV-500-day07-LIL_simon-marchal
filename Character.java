@@ -81,8 +81,7 @@ public abstract class Character implements Movable, Comparable<Character> {
 
     @Override
     public int compareTo(Character other) {
-        // Comparison logic based on character types and capacities
-        if (Objects.equals(this.RPGClass, other.RPGClass)) {
+        if (this.RPGClass.equals(other.RPGClass)) {
             return Integer.compare(this.capacity, other.capacity);
         } else if (this instanceof Warrior && other instanceof Mage) {
             if (this.capacity % other.capacity == 0) {
@@ -97,6 +96,7 @@ public abstract class Character implements Movable, Comparable<Character> {
                 return 1;
             }
         }
-        return 0;
+        // If the RPG classes are different and the characters are not Warrior or Mage
+        return 0; // Or you might define a custom logic for other RPG classes.
     }
 }
