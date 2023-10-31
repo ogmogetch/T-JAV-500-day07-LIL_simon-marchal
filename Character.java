@@ -1,13 +1,13 @@
-import java.lang.reflect.Method;
+import java.util.Objects;
 
-public abstract class Character implements Movable {
+public abstract class Character implements Movable, Comparable<Character> {
     protected String name;
     protected int life;
     protected int agility;
     protected int wit;
     protected int strength;
     protected final String RPGClass;
-    // declare nonabstract methods
+    protected int capacity; // Added capacity attribute
 
     protected Character(String name, String RPGClass) {
         this.name = name;
@@ -16,6 +16,12 @@ public abstract class Character implements Movable {
         this.agility = 2;
         this.strength = 2;
         this.wit = 2;
+        this.capacity = 0; // Default capacity set to 0
+    }
+
+    protected Character(String name, String RPGClass, int capacity) {
+        this(name, RPGClass);
+        this.capacity = capacity;
     }
 
     public String getName() {
@@ -42,10 +48,16 @@ public abstract class Character implements Movable {
         return this.RPGClass;
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
+    // Attack method remains unchanged
     public void attack(String random) {
         System.out.println(this.name + ": Rrrrrrrrr....");
     }
 
+    // Movement methods implemented from Movable interface
     public void moveRight() {
         System.out.println(this.name + ": moves right");
     }
@@ -62,7 +74,29 @@ public abstract class Character implements Movable {
         System.out.println(this.name + ": moves back");
     }
 
+    // Unsheathe method remains unchanged
     public final void unsheathe() {
         System.out.println(this.name + ": unsheathes his weapon.");
+    }
+
+    @Override
+    public int compareTo(Character other) {
+        // Comparison logic based on character types and capacities
+        if (this.getClass().equals(other.getClass())) {
+            return Integer.compare(this.capacity, other.capacity);
+        } else if (this instanceof Warrior && other instanceof Mage) {
+            if (this.capacity % other.capacity == 0) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if (this instanceof Mage && other instanceof Warrior) {
+            if (other.capacity % this.capacity == 0) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+        return 0;
     }
 }
